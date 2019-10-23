@@ -1,5 +1,5 @@
-set(qt_url http://download.qt.io/official_releases/qt/5.8/5.8.0/single/qt-everywhere-opensource-src-5.8.0.tar.gz)
-set(qt_md5 a9f2494f75f966e2f22358ec367d8f41)
+set(qt_url http://download.qt.io/official_releases/qt/5.9/5.9.8/single/qt-everywhere-opensource-src-5.9.8.tar.xz)
+set(qt_md5 bfeb4795c9446b9ff7c6c3c9042eb498)
 
 if(BUILD_OS_WINDOWS)
     # For some as of yet unknown reason, building Qt on Windows fails because it does not create moc targets.
