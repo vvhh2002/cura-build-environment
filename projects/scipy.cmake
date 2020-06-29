@@ -1,6 +1,6 @@
 if(NOT BUILD_OS_WINDOWS)
-    set(scipy_build_command ${PYTHON_EXECUTABLE} setup.py build)
-    set(scipy_install_command ${PYTHON_EXECUTABLE} setup.py install)
+    set(scipy_build_command ${Python3_EXECUTABLE} setup.py build)
+    set(scipy_install_command ${Python3_EXECUTABLE} setup.py install)
 
     if(BUILD_OS_OSX)
         set(scipy_build_command env LDFLAGS="-undefined dynamic_lookup" ${scipy_build_command})
@@ -21,13 +21,13 @@ else()
     # This means we need to use a pre-compiled binary version of Scipy.
     if( BUILD_OS_WIN32 )
         add_custom_target(SciPy
-            COMMAND ${PYTHON_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/scipy‑1.1.0‑cp35‑cp35m‑win32.whl
+            COMMAND ${Python3_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/scipy‑1.1.0‑cp35‑cp35m‑win32.whl
             COMMENT "Installing SciPy"
         )
     SetProjectDependencies(TARGET PyQt DEPENDS Python)
     else()
         add_custom_target(SciPy
-            COMMAND ${PYTHON_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/scipy-1.1.0-cp35-cp35m-win_amd64.whl
+            COMMAND ${Python3_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/scipy-1.1.0-cp35-cp35m-win_amd64.whl
             COMMENT "Installing SciPy"
         )
     endif()

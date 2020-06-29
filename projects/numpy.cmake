@@ -3,8 +3,8 @@ if(NOT BUILD_OS_WINDOWS)
         URL http://downloads.sourceforge.net/project/numpy/NumPy/1.11.1/numpy-1.11.1.tar.gz
         URL_MD5 2f44a895a8104ffac140c3a70edbd450
         CONFIGURE_COMMAND ""
-        BUILD_COMMAND ${PYTHON_EXECUTABLE} setup.py build
-        INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install --single-version-externally-managed --record=numpy-install.log
+        BUILD_COMMAND ${Python3_EXECUTABLE} setup.py build
+        INSTALL_COMMAND ${Python3_EXECUTABLE} setup.py install --single-version-externally-managed --record=numpy-install.log
         BUILD_IN_SOURCE 1
     )
 else()
@@ -14,12 +14,12 @@ else()
     # Windows available depends on numpy with MKL, we also need the binary package for that.
     if( BUILD_OS_WIN32 )
         add_custom_target(NumPy
-            COMMAND ${PYTHON_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/numpy-1.15.2+mkl-cp35-cp35m-win32.whl
+            COMMAND ${Python3_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/numpy-1.15.2+mkl-cp35-cp35m-win32.whl
             COMMENT "Installing NumPy"
         )
     else()
         add_custom_target(NumPy
-            COMMAND ${PYTHON_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/numpy-1.15.2+mkl-cp35-cp35m-win_amd64.whl
+            COMMAND ${Python3_EXECUTABLE} -m pip install http://software.ultimaker.com/cura-binary-dependencies/numpy-1.15.2+mkl-cp35-cp35m-win_amd64.whl
             COMMENT "Installing NumPy"
         )
     endif()
