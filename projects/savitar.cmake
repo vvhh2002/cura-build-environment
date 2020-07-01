@@ -20,7 +20,7 @@ elseif(BUILD_OS_OSX)
     endif()
 endif()
 
-set(python3_find_strategy "")
+set(python3_find_strategy VERSION)
 if(BUILD_OS_LINUX)
     set(python3_find_strategy LOCATION)
 endif()
