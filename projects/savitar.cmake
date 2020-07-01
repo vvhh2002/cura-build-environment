@@ -20,6 +20,11 @@ elseif(BUILD_OS_OSX)
     endif()
 endif()
 
+set(python3_find_strategy "")
+if(BUILD_OS_LINUX)
+    set(python3_find_strategy LOCATION)
+endif()
+
 ExternalProject_Add(Savitar
     GIT_REPOSITORY https://github.com/ultimaker/libSavitar.git
     GIT_TAG origin/${CURA_SAVITAR_BRANCH_OR_TAG}
@@ -29,7 +34,7 @@ ExternalProject_Add(Savitar
                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
                -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
                -DBUILD_STATIC=ON
-               -DPython3_FIND_STRATEGY=LOCATION
+               -DPython3_FIND_STRATEGY=${python3_find_strategy}
                ${extra_cmake_args}
 )
 

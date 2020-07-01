@@ -14,6 +14,11 @@ elseif(BUILD_OS_OSX)
     endif()
 endif()
 
+set(python3_find_strategy "")
+if(BUILD_OS_LINUX)
+    set(python3_find_strategy LOCATION)
+endif()
+
 ExternalProject_Add(Arcus
     GIT_REPOSITORY https://github.com/ultimaker/libArcus.git
     GIT_TAG origin/${CURA_ARCUS_BRANCH_OR_TAG}
@@ -24,7 +29,7 @@ ExternalProject_Add(Arcus
                -DBUILD_STATIC=ON
                -DBUILD_PYTHON=ON
                -DBUILD_EXAMPLES=OFF
-               -DPython3_FIND_STRATEGY=LOCATION
+               -DPython3_FIND_STRATEGY=${python3_find_strategy}
                ${extra_cmake_args}
 )
 
