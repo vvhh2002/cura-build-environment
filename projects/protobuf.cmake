@@ -35,12 +35,21 @@ if(BUILD_OS_OSX)
     endif()
 endif()
 
-ExternalProject_Add(Protobuf
-    URL     ${_cura_protobuf_url}
-    URL_MD5 ${_cura_protobuf_md5}
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} ${protobuf_configure_args} -G ${CMAKE_GENERATOR} ../Protobuf/cmake
-    BUILD_COMMAND make -j${N}
-)
+if(BUILD_OS_WINDOWS)
+    ExternalProject_Add(Protobuf
+        URL     ${_cura_protobuf_url}
+        URL_MD5 ${_cura_protobuf_md5}
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} ${protobuf_configure_args} -G ${CMAKE_GENERATOR} ../Protobuf/cmake
+    )
+else()
+    # Build using all cores on UNIX systems
+    ExternalProject_Add(Protobuf
+        URL     ${_cura_protobuf_url}
+        URL_MD5 ${_cura_protobuf_md5}
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} ${protobuf_configure_args} -G ${CMAKE_GENERATOR} ../Protobuf/cmake
+        BUILD_COMMAND make -j${N}
+    )
+endif()
 
 if(BUILD_OS_WINDOWS)
     # Compile it again, this time using MinGW

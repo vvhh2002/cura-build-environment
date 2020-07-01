@@ -83,13 +83,21 @@ if(BUILD_OS_OSX)
         BUILD_IN_SOURCE 1
         DEPENDS OpenSSL
     )
-else()
+elseif(BUILD_OS_LINUX)
     ExternalProject_Add(Qt
         URL ${qt_url}
         URL_MD5 ${qt_md5}
         PATCH_COMMAND ${_patch_command}
         CONFIGURE_COMMAND ./configure ${qt_options}
         BUILD_COMMAND make -j${N}
+        BUILD_IN_SOURCE 1
+    )
+else()
+    ExternalProject_Add(Qt
+        URL ${qt_url}
+        URL_MD5 ${qt_md5}
+        PATCH_COMMAND ${_patch_command}
+        CONFIGURE_COMMAND ./configure ${qt_options}
         BUILD_IN_SOURCE 1
     )
 endif()
