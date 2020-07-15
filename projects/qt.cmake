@@ -1,5 +1,5 @@
-set(qt_url https://download.qt.io/new_archive/qt/5.10/5.10.1/single/qt-everywhere-src-5.10.1.tar.xz)
-set(qt_md5 7e167b9617e7bd64012daaacb85477af)
+set(qt_url http://download.qt.io/official_releases/qt/5.9/5.9.9/single/qt-everywhere-opensource-src-5.9.9.tar.xz)
+set(qt_md5 97e81709b57e82ab2b279408eaa9270e)
 
 if(BUILD_OS_WINDOWS)
     # For some as of yet unknown reason, building Qt on Windows fails because it does not create moc targets.
@@ -7,7 +7,6 @@ if(BUILD_OS_WINDOWS)
     return()
 endif()
 
-set(_qt_configure_cmd "./configure")
 set(qt_options
     -release
     -prefix ${CMAKE_INSTALL_PREFIX}
@@ -36,6 +35,7 @@ set(qt_options
     -skip qtsensors
     -skip qtwebchannel
     -skip qtwebengine
+    -skip qtwebsockets
     -skip qtandroidextras
     -skip qtactiveqt
     -skip qttools
@@ -50,44 +50,15 @@ set(qt_options
 
 if(BUILD_OS_OSX)
     list(APPEND qt_options -no-framework)
-    if(CURA_OSX_SDK_VERSION)
-        list(APPEND qt_options -sdk macosx${CURA_OSX_SDK_VERSION})
-    endif()
-    set(_qt_config_cmd ${CMAKE_SOURCE_DIR}/projects/qt-patch-macosx-target.sh && ${_qt_configure_cmd})
-elseif(BUILD_OS_WINDOWS)
-    list(APPEND qt_options -opengl desktop)
 elseif(BUILD_OS_LINUX)
-    list(APPEND qt_options
-	 -rpath
-	 -pkg-config
-	 -opengl desktop -no-gtk
-	 -qt-xcb
-	 -fontconfig
-	 -system-freetype
-	 -system-zlib
-	 -ssl -openssl-runtime
-	 -I "${CMAKE_INSTALL_PREFIX}/include"
-	 -L "${CMAKE_INSTALL_PREFIX}/lib")
+    list(APPEND qt_options -no-gtk -no-rpath -qt-xcb)
 endif()
 
-set(_patch_command "")
 if(BUILD_OS_LINUX)
-    set(_patch_command patch -p1 < ${CMAKE_SOURCE_DIR}/projects/compile_qt_with_glibc_2.31.patch)
-endif()
-
-if(BUILD_OS_OSX)
     ExternalProject_Add(Qt
         URL ${qt_url}
         URL_MD5 ${qt_md5}
-        CONFIGURE_COMMAND ${_qt_configure_cmd} ${qt_options}
-        BUILD_IN_SOURCE 1
-        DEPENDS OpenSSL
-    )
-elseif(BUILD_OS_LINUX)
-    ExternalProject_Add(Qt
-        URL ${qt_url}
-        URL_MD5 ${qt_md5}
-        PATCH_COMMAND ${_patch_command}
+        PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/projects/fix_qt_eglfs_device.patch
         CONFIGURE_COMMAND ./configure ${qt_options}
         BUILD_COMMAND make -j${N}
         BUILD_IN_SOURCE 1
@@ -96,7 +67,6 @@ else()
     ExternalProject_Add(Qt
         URL ${qt_url}
         URL_MD5 ${qt_md5}
-        PATCH_COMMAND ${_patch_command}
         CONFIGURE_COMMAND ./configure ${qt_options}
         BUILD_IN_SOURCE 1
     )

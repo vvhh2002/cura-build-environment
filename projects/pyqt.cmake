@@ -30,7 +30,7 @@ else()
 
     ExternalProject_Add(PyQt
         URL https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.9.2/PyQt5_gpl-5.9.2.tar.gz
-        URL_MD5 4874c5985246fdeb4c3c7843a3e6ef53
+        URL_MD5 33d6d2ab8183da17ac18b8132a4b278e
         CONFIGURE_COMMAND ${pyqt_command}
         BUILD_COMMAND make -j${N}
         BUILD_IN_SOURCE 1
